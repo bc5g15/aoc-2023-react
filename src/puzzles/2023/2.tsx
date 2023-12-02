@@ -1,4 +1,5 @@
 import { PuzzleForm, Solution } from "../PuzzleForm"
+import { sum } from "../helpers";
 
 const readColours = (round: string) => {
     const results = {
@@ -45,11 +46,11 @@ const maxLimit = (game: Game) => {
     })
 }
 
+
 const calibration: Solution = (input) => {
 
     const lines = input.split('\n').map(line => {
         const result = /Game (?<game>\d+): (?<rounds>.+)/u.exec(line)?.groups;
-        console.log(result);
         const colours = (result?.['rounds'] ?? '').split(';').map(readColours);
         return {
             id: parseInt(result?.['game'] ?? '0'),
@@ -64,8 +65,16 @@ const calibration: Solution = (input) => {
 
     const part1 = validGames.reduce((acc, { id }) => acc + id, 0)
 
+    const powers = lines.map(line => {
+        const { red, blue, green } = maxLimit(line);
+        return red * blue * green;
+    });
+
+    const part2 = sum(powers);
+
     return (<>
         <div>{part1}</div>
+        <div>{part2}</div>
     </>)
 }
 
