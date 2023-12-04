@@ -11,12 +11,12 @@ const readDiagram = (diagram: string[]) => {
     const numbers = [];
 
     for (let y = 0; y < diagram.length; y++) {
-        const numberMatches = diagram[y].matchAll(/-?\d+/ug);
+        const numberMatches = diagram[y].matchAll(/\d+/ug);
         for ( const match of numberMatches) {
             // Check for adjacents
 
             const minx = Math.max((match?.index ?? 0) -1, 0);
-            const maxx = Math.min((match?.index ?? 0) + match[0].length + 1, diagram[y].length-1);
+            const maxx = Math.min((match?.index ?? 0) + match[0].length, diagram[y].length-1);
             const miny = Math.max(0, y-1);
             const maxy = Math.min(diagram.length-1, y+1);
             const connectors = [];
@@ -48,6 +48,12 @@ const calibration: Solution = (input) => {
     const numbers = readDiagram(diagram);
     // console.log(numbers.filter(n => n.connectors.length === 0).reduce((acc, cur) => acc + cur.value, 0));
     // console.log(numbers.reduce((acc, cur) => acc + cur.value, 0));
+
+    console.log(numbers.map(n => n.connectors.map(c => ({
+        x: Math.abs(n.x - c.x),
+        y: Math.abs(n.y - c.y),
+        value: n.value
+    }))));
 
     const part1 = numbers.filter(n => n.connectors.length > 0).reduce((acc, cur) => acc + cur.value, 0);
 
