@@ -1,11 +1,18 @@
-import { PuzzleForm } from "./PuzzleForm";
+import { PuzzleForm, Solution } from "./PuzzleForm"
 
-export function Template() {
-    
+const solve: Solution = (input) => {
     return (<>
-        <h1>My example puzzle template</h1>
-        <PuzzleForm 
-            onSolve={(text) => (<div>{text}</div>)}
-        />
+        <div>
+            {input}
+        </div>
+        <div>
+        </div>
     </>)
 }
+
+export const Template = () => (
+    <>
+        <h1>Day ?: Name</h1>
+        <PuzzleForm onSolve={solve} />
+    </>
+)
