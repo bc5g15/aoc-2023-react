@@ -3,7 +3,7 @@
   "private": true,
   "version": "0.0.0",
   "type": "module",
-  "homepage": "https://bc515.github.io/aoc-2023-react/",
+  "homepage": "https://bc5g15.github.io/aoc-2023-react/",
   "scripts": {
     "dev": "vite",
     "build": "tsc && vite build",
