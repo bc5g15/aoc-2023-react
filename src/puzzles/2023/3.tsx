@@ -1,20 +1,12 @@
 import { PuzzleForm, Solution } from "../PuzzleForm"
-import { sum } from "../helpers";
-
-// type CharIndex = 
-
-// 569394 - Too high..?
-// 557753 - Too high...
 
 const readDiagram = (diagram: string[]) => {
-    // const symbols = new Map<string, number[]>();
     const numbers = [];
 
     for (let y = 0; y < diagram.length; y++) {
         const numberMatches = diagram[y].matchAll(/\d+/ug);
         for ( const match of numberMatches) {
             // Check for adjacents
-
             const minx = Math.max((match?.index ?? 0) -1, 0);
             const maxx = Math.min((match?.index ?? 0) + match[0].length, diagram[y].length-1);
             const miny = Math.max(0, y-1);
@@ -46,8 +38,6 @@ const readDiagram = (diagram: string[]) => {
 const calibration: Solution = (input) => {
     const diagram = input.split('\n');
     const numbers = readDiagram(diagram);
-    // console.log(numbers.filter(n => n.connectors.length === 0).reduce((acc, cur) => acc + cur.value, 0));
-    // console.log(numbers.reduce((acc, cur) => acc + cur.value, 0));
 
     console.log(numbers.map(n => n.connectors.map(c => ({
         x: Math.abs(n.x - c.x),
@@ -55,13 +45,26 @@ const calibration: Solution = (input) => {
         value: n.value
     }))));
 
+    const shared: Map<string, number[]> = new Map();
+    numbers.forEach(n => n.connectors.forEach(c => {
+            const key = `${c.x},${c.y}`;
+            if (shared.has(key)) {
+                shared.get(key)?.push(n.value);
+            } else {
+                shared.set(key, [n.value]);
+            }
+        }    
+    ))
+
     const part1 = numbers.filter(n => n.connectors.length > 0).reduce((acc, cur) => acc + cur.value, 0);
+    const part2 = [...shared.values()].filter(c => c.length === 2).reduce((acc, cur) => acc + (cur[0]*cur[1]), 0)
 
     return (<>
         <div>
             {part1}
         </div>
         <div>
+            {part2}
         </div>
     </>)
 }
