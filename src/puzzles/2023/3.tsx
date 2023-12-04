@@ -39,12 +39,6 @@ const calibration: Solution = (input) => {
     const diagram = input.split('\n');
     const numbers = readDiagram(diagram);
 
-    console.log(numbers.map(n => n.connectors.map(c => ({
-        x: Math.abs(n.x - c.x),
-        y: Math.abs(n.y - c.y),
-        value: n.value
-    }))));
-
     const shared: Map<string, number[]> = new Map();
     numbers.forEach(n => n.connectors.forEach(c => {
             const key = `${c.x},${c.y}`;
