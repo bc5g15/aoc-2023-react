@@ -2,6 +2,7 @@ import { Template } from "../Template";
 import { Trebuchet } from "./1";
 import { CubeConundrum } from "./2";
 import { GearRatios } from "./3";
+import { Scratchcards } from "./4";
 
 export const puzzleIndex = [
     {
@@ -19,5 +20,9 @@ export const puzzleIndex = [
     {
         name: 'Day 3: Gear Ratios',
         element: <GearRatios />
+    },
+    {
+        name: 'Day 4: Scratchcards',
+        element: <Scratchcards />
     }
 ];
