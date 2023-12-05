@@ -3,6 +3,7 @@ import { Trebuchet } from "./1";
 import { CubeConundrum } from "./2";
 import { GearRatios } from "./3";
 import { Scratchcards } from "./4";
+import { AlmanacReader } from "./5";
 
 export const puzzleIndex = [
     {
@@ -24,5 +25,9 @@ export const puzzleIndex = [
     {
         name: 'Day 4: Scratchcards',
         element: <Scratchcards />
+    },
+    {
+        name: 'Day 5: If You Give A Seed A Fertilizer',
+        element: <AlmanacReader />
     }
 ];
