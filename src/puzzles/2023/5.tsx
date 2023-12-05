@@ -79,14 +79,23 @@ const resolve = (seed: number, maps:Map<string, MapDetails>) => {
 const solve: Solution = (input) => {
     const { seeds, maps } = buildMaps(input);
 
-    console.log(seeds.map(s => resolve(s, maps)));
     const part1Locations = seeds.map(s => resolve(s, maps));
+
+    let currentPart2Minimum = Number.MAX_SAFE_INTEGER;
+    for (let i = 0; i < seeds.length; i+=2) {
+        const current = seeds[i];
+        const range = seeds[i+1];
+        for (let j = 0; j < range; j++) {
+            currentPart2Minimum = Math.min(currentPart2Minimum, resolve(current+j, maps));
+        }
+    }
 
     return (<>
         <div>
             {Math.min(...part1Locations)}
         </div>
         <div>
+            {currentPart2Minimum}
         </div>
     </>)
 }
