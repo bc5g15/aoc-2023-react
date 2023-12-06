@@ -4,6 +4,7 @@ import { CubeConundrum } from "./2";
 import { GearRatios } from "./3";
 import { Scratchcards } from "./4";
 import { AlmanacReader } from "./5";
+import { WaitForIt } from "./6";
 
 export const puzzleIndex = [
     {
@@ -29,5 +30,9 @@ export const puzzleIndex = [
     {
         name: 'Day 5: If You Give A Seed A Fertilizer',
         element: <AlmanacReader />
+    },
+    {
+        name: 'Day 6: Wait For It',
+        element: <WaitForIt />
     }
 ];
