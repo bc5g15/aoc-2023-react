@@ -1,11 +1,14 @@
 import { PuzzleForm, Solution } from "../PuzzleForm"
 
-const convertHand = (hand: string) => {
+const convertHand = (hand: string, jokersWild: boolean = false) => {
     return [...hand].map(c => {
         if (c === 'A') return 'E';
         if (c === 'K') return 'D';
         if (c === 'Q') return 'C';
-        if (c === 'J') return 'B';
+        if (c === 'J') {
+            if (jokersWild) return '0';
+            return 'B';
+        }
         if (c === 'T') return 'A';
         return c;
     }).join('')
@@ -25,9 +28,19 @@ const resolveHand = (hand: string) => {
     return cards;
 }
 
-const checkHand = (hand: CardCount) => {
+const checkHand = (hand: CardCount, jokersWild: boolean = false) => {
+    let jokers = 0;
+    if (jokersWild) {
+        jokers = hand.get('0') ?? 0;
+        hand.delete('0')   
+    }
     const groups = hand.size;
     const fullGroups = [...hand.entries()];
+
+    // Edge case - All jokers 5oaK
+    if (groups === 0 && jokersWild) {
+        return 6;
+    }
 
     // Five of a Kind
     if (groups === 1 ) {
@@ -36,7 +49,7 @@ const checkHand = (hand: CardCount) => {
 
     // Four of a Kind or Full House
     if (groups === 2) {
-        if (fullGroups.some(v => v[1] === 4)) {
+        if (fullGroups.some(v => v[1] === 4-jokers)) {
             // Four of a kind
             return 5;
         } else {
@@ -46,7 +59,7 @@ const checkHand = (hand: CardCount) => {
 
     // Three of a kind or two pairs
     if (groups === 3) {
-        if (fullGroups.some(v => v[1] === 3)) {
+        if (fullGroups.some(v => v[1] === 3-jokers)) {
             // Three of a kind
             return 3;
         } else {
@@ -63,20 +76,20 @@ const checkHand = (hand: CardCount) => {
     return 0;
 }
 
-const part1 = (handBids: [string, number][]) => {
+const doThings = (handBids: [string, number][], part2:boolean = false) => {
     const mine = new Array(...handBids);
-    const sortedMine: [string, number][] = mine.map(v => [convertHand(v[0]), v[1]])
+    const sortedMine: [string, number][] = mine.map(v => [convertHand(v[0], part2), v[1]])
     
     const rankedMine: [string, number, number][] = sortedMine.map(h => {
         const handMap = resolveHand(h[0]);
-        const rank = checkHand(handMap)
+        const rank = checkHand(handMap, part2)
         return [h[0], h[1], rank];
     });
 
     // sorted by hand
     rankedMine.sort((a, b) => a[0].localeCompare(b[0]));
 
-    // Sorted by tank
+    // Sorted by rank
     rankedMine.sort((a, b) => a[2] - b[2]);
     return rankedMine.reduce((acc, cur, i) => acc + (cur[1]*(i+1)), 0);
 }
@@ -87,9 +100,10 @@ const solve: Solution = (input) => {
 
     return (<>
         <div>
-            {part1(handBids)}
+            {doThings(handBids)}
         </div>
         <div>
+            {doThings(handBids, true)}
         </div>
     </>)
 }
