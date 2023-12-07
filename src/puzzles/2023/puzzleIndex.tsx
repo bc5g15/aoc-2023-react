@@ -5,6 +5,7 @@ import { GearRatios } from "./3";
 import { Scratchcards } from "./4";
 import { AlmanacReader } from "./5";
 import { WaitForIt } from "./6";
+import { CamelCards } from "./7";
 
 export const puzzleIndex = [
     {
@@ -34,5 +35,9 @@ export const puzzleIndex = [
     {
         name: 'Day 6: Wait For It',
         element: <WaitForIt />
+    },
+    {
+        name: 'Day 7: Camel Cards',
+        element: <CamelCards />
     }
 ];
