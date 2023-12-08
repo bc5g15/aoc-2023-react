@@ -6,6 +6,7 @@ import { Scratchcards } from "./4";
 import { AlmanacReader } from "./5";
 import { WaitForIt } from "./6";
 import { CamelCards } from "./7";
+import { HauntedWasteland } from "./8";
 
 export const puzzleIndex = [
     {
@@ -39,5 +40,9 @@ export const puzzleIndex = [
     {
         name: 'Day 7: Camel Cards',
         element: <CamelCards />
+    },
+    {
+        name: 'Day 8: Haunted Wasteland',
+        element: <HauntedWasteland />
     }
 ];
