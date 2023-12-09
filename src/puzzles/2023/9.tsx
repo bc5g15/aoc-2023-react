@@ -23,23 +23,28 @@ const extrapolate = (history: number[]) => {
     // Knock them down
     while (data.length > 0) {
         const delta = base[base.length-1];
+        const reverseDelta = base[0];
         const current = data.pop()!;
         current.push(current[current.length-1] + delta)
+        current.unshift(current[0] - reverseDelta)
         base = current;
     }
 
-    return base[base.length-1];
+    return [base[0], base[base.length-1]];
 }
 
 const solve: Solution = (input) => {
     const histories = input.split('\n').map(l => l.split(' ').map(x => parseInt(x)));
-    const value = sum(histories.map(extrapolate));
+    const results = histories.map(extrapolate);
+    const part1 = sum(results.map(h => h[1]));
+    const part2 = sum(results.map(h => h[0]));
 
     return (<>
         <div>
-            {value}
+            {part1}
         </div>
         <div>
+            {part2}
         </div>
     </>)
 }
