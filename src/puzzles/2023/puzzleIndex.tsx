@@ -7,6 +7,7 @@ import { AlmanacReader } from "./5";
 import { WaitForIt } from "./6";
 import { CamelCards } from "./7";
 import { HauntedWasteland } from "./8";
+import { MirageMaintenance } from "./9";
 
 export const puzzleIndex = [
     {
@@ -44,5 +45,9 @@ export const puzzleIndex = [
     {
         name: 'Day 8: Haunted Wasteland',
         element: <HauntedWasteland />
+    },
+    {
+        name: 'Day 9: Mirage Maintenance',
+        element: <MirageMaintenance />
     }
 ];
