@@ -1,5 +1,6 @@
 import { Template } from "../Template";
 import { Trebuchet } from "./1";
+import { PipeMaze } from "./10";
 import { CubeConundrum } from "./2";
 import { GearRatios } from "./3";
 import { Scratchcards } from "./4";
@@ -49,5 +50,9 @@ export const puzzleIndex = [
     {
         name: 'Day 9: Mirage Maintenance',
         element: <MirageMaintenance />
+    },
+    {
+        name: 'Day 10: Pipe Maze',
+        element: <PipeMaze />
     }
 ];
