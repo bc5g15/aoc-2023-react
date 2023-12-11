@@ -19,8 +19,6 @@ const inputCharMap: Record<string, number> = {
     'S': 0b1111
 };
 
-// 6799 - Too Low
-
 const UP =      0b1000;
 const RIGHT =   0b0100;
 const DOWN =    0b0010;
@@ -41,49 +39,32 @@ const directionOpposites: Record<number, number> = {
     [RIGHT]: LEFT
 }
 
-const checkExits = (exits: number) => {
-    const results: [number, number, number][] = [];
-    if (exits & UP)     results.push([0, -1, DOWN])
-    if (exits & RIGHT)  results.push([1, 0, LEFT])
-    if (exits & DOWN)   results.push([0, 1, UP])
-    if (exits & LEFT)   results.push([-1, 0, RIGHT])
-    return results;
-}
+const followPipe = (sx: number, sy: number, direction: number, maze: Map<string, number>) => {
+    let x = sx;
+    let y = sy;
+    let current = maze.get(`${x},${y}`)!;
+    let steps = 1;
+    const path: [number, number, number][] = [];
+    let prevDir = direction;
+    const destination = 0b1111;
 
-const walkMaze = (start: [number, number], maze: Map<string, number>) => {
-    const [sx, sy] = start;
-    const nodes: [number, number, number, number][] = [[sx, sy, 0, 0]];
-    const visited: Map<string, number> = new Map();
-    const points: number[] = [];
-
-    while (nodes.length > 0) {
-        const [x, y, steps, fromDir] = nodes.pop()!;
-        const index = `${x},${y}`;
-        if (!maze.has(index)) continue;
-
-        if (visited.has(index)) {
-            points.push(Math.min(steps, visited.get(index)!))
-            continue;
-        }
-        visited.set(index, steps)
-
-        const exits = maze.get(index)!;
-        
-        const deltas = checkExits(exits ^ fromDir);
-        for (const [dx, dy, from] of deltas) {
-            const dIndex = `${x+dx},${y+dy}`;
-            if (!maze.has(dIndex)) continue;
-            nodes.unshift([x+dx, y+dy, steps+1, from])
-        }
+    while (current !== destination) {
+        path.push([x, y, steps]);
+        const nextDir = current ^ directionOpposites[prevDir];
+        const [ndx, ndy] = directionDeltas[nextDir];
+        x += ndx; y+=ndy;
+        prevDir = nextDir;
+        if (!maze.has(`${x},${y}`)) return [] // Dead end
+        current = maze.get(`${x},${y}`)!
+        steps += 1;
     }
-
-    console.log(points);
-    return Math.max(...points);
+    return path;
 }
 
 const findLoops = (start: [number, number], maze: Map<string, number>) => {
     const [sx, sy] = start;
-    const startNode = maze.get(`${sx},${sy}`)!
+    // const startNode = maze.get(`${sx},${sy}`)!
+    const results = [];
 
     // Check the four directions. 
     const directions = [UP, RIGHT, DOWN, LEFT];
@@ -93,26 +74,14 @@ const findLoops = (start: [number, number], maze: Map<string, number>) => {
         const dIndex = `${sx+dx},${sy+dy}`
         if (!maze.has(dIndex) || (maze.get(dIndex)! & directionOpposites[dir]) === 0) continue;
 
-        // Walk the loop
-        let x = sx+dx;
-        let y = sy+dy;
-        let current = maze.get(dIndex)!;
-        let steps = 1;
-        const path = []
-        let prevDir = dir;
-
-        // How do I sensibly break out of this when I hit a dead end? Might need its own function
-        while (current !== startNode) {
-            path.push([x, y, steps]);
-            const nextDir = current ^ directionOpposites[prevDir];
-            const [ndx, ndy] = directionDeltas[nextDir];
-            x += ndx; y+=ndy;
-            prevDir = nextDir;
-            current = maze.get(`${x},${y}`)!
-            steps += 1;
+        const path = followPipe(sx+dx, sy+dy, dir, maze);
+        if (path) {
+            results.push(path);
         }
 
     }
+
+    return results;
 }
 
 const solve: Solution = (input) => {
@@ -131,9 +100,13 @@ const solve: Solution = (input) => {
             }
         }
     }
+
+    const loops = findLoops([startX, startY], pipeMap);
+    const value = loops[0][Math.floor(loops[0].length/2)][2]
+
     return (<>
         <div>
-            {walkMaze([startX, startY], pipeMap)}
+            {value}
         </div>
         <div>
         </div>
@@ -142,7 +115,7 @@ const solve: Solution = (input) => {
 
 export const PipeMaze = () => (
     <>
-        <h1>Day ?: Name</h1>
+        <h1>Day 10: Pipe Maze</h1>
         <PuzzleForm onSolve={solve} />
     </>
 )
