@@ -15,18 +15,20 @@ const lightBeam = (maze: string[][]) => {
     const nodes: [number, number, Direction][] = [[0, 0, 'right']]
     const height = maze.length;
     const width = maze[0].length;
-    const visited: Set<string> = new Set();
+    const visited: Set<string> = new Set(['0,0']);
+    const doubleVisited: Set<string> = new Set();
 
     while (nodes.length > 0) {
         const [x, y, dir] = nodes.pop()!;
         const [dx, dy] = deltas[dir];
-        console.log(nodes.length);
+        // console.log(nodes.length);
 
         // Check if it is an illegal space
-        if (x+dx < 0 || x+dx>=width || y+dy<0 || y+dy>=height) continue;
+        if (x+dx < 0 || x+dx>=width || y+dy<0 || y+dy>=height || doubleVisited.has([x,y,dir].join(','))) continue;
         const rx = x + dx;
         const ry = y + dy;
         const cell = maze[ry][rx];
+        doubleVisited.add([x,y,dir].join(','));
 
         if (cell === '.') {
             nodes.push([rx, ry, dir]);
