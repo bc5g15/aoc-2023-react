@@ -11,11 +11,12 @@ const deltas: Record<Direction, [number, number]> = {
 
 const toKey = (...numbers: number[]) => numbers.join(',');
 
-const lightBeam = (maze: string[][]) => {
-    const nodes: [number, number, Direction][] = [[0, 0, 'right']]
+const lightBeam = (maze: string[][], start: [number, number, Direction] = [0, 0, 'right']) => {
+    const nodes: [number, number, Direction][] = [start]
     const height = maze.length;
     const width = maze[0].length;
-    const visited: Set<string> = new Set(['0,0']);
+    const visited: Set<string> = new Set();
+    visited.add([start[0], start[1]].join(','));
     const doubleVisited: Set<string> = new Set();
 
     while (nodes.length > 0) {
@@ -81,14 +82,36 @@ const lightBeam = (maze: string[][]) => {
     return visited.size;
 }
 
+const part2 = (maze: string[][]) => {
+    const starts: [number, number, Direction][] = [];
+
+    const xmax = maze[0].length-1;
+    const ymax = maze.length-1;
+
+    for (let y = 0; y <= ymax; y++) {
+        starts.push([0, y, 'right']);
+        starts.push([xmax, y, 'left']);
+    }
+
+    for (let x = 0; x <= xmax; x++) {
+        starts.push([x, 0, 'down']);
+        starts.push([x, ymax, 'up']);
+    }
+
+
+    return Math.max(...starts.map(s => lightBeam(maze, s)));
+}
+
 const solve: Solution = (input) => {
     const maze = input.split('\n').map(l => l.split(''));
     const part1 = lightBeam(maze);
+    const p2 = part2(maze);
     return (<>
         <div>
             {part1}
         </div>
         <div>
+            {p2}
         </div>
     </>)
 }
