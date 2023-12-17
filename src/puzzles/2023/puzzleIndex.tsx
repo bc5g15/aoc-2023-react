@@ -1,6 +1,7 @@
 import { Template } from "../Template";
 import { Trebuchet } from "./1";
 import { LensLibrary } from "./15";
+import { LavaFloor } from "./16";
 import { CubeConundrum } from "./2";
 import { GearRatios } from "./3";
 import { Scratchcards } from "./4";
@@ -54,5 +55,9 @@ export const puzzleIndex = [
     {
         name: 'Day 15: Lens Library',
         element: <LensLibrary />
+    },
+    {
+        name: 'Day 16: The Floor Will Be Lava',
+        element: <LavaFloor />
     }
 ];
