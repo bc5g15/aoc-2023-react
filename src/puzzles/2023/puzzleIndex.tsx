@@ -3,6 +3,7 @@ import { Trebuchet } from "./1";
 import { LensLibrary } from "./15";
 import { LavaFloor } from "./16";
 import { CubeConundrum } from "./2";
+import { StepCounter } from "./21";
 import { GearRatios } from "./3";
 import { Scratchcards } from "./4";
 import { AlmanacReader } from "./5";
@@ -59,5 +60,9 @@ export const puzzleIndex = [
     {
         name: 'Day 16: The Floor Will Be Lava',
         element: <LavaFloor />
+    },
+    {
+        name: 'Day 21: Step Counter',
+        element: <StepCounter />
     }
 ];
