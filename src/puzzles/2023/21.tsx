@@ -44,12 +44,13 @@ const walk = (maze: number[][]) => {
 
         DELTAS.forEach(([dx, dy]) => {
             const c = maze?.[y+dy]?.[x+dx];
-            if (c && c===PLOT) {
+            if (c && (c===PLOT || c===START)) {
                 nodes.push([x+dx, y+dy, steps+1]);
             }
         })
     }
 
+    console.log(positions);
     return positions.size;
 }
 
